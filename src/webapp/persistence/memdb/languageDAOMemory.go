@@ -12,7 +12,8 @@ import (
 
 // Structure definition
 type LanguageDAOMemory struct {
-	dataMap map[string]entities.Language // the map to store Language entities
+	// dataMap * map[string]entities.Language // the map to store Language entities
+	dataMap * LanguageDataMap
 }
 
 // Structure pseudo-construtor
@@ -22,7 +23,8 @@ func NewLanguageDAOMemory() LanguageDAOMemory {
 	// dao.init()
 	// return dao
 	return LanguageDAOMemory{
-		dataMap: make(map[string]entities.Language),
+		//dataMap: make(map[string]entities.Language),
+		dataMap: GetLanguageDataMap(),
 	}
 }
 
@@ -32,51 +34,56 @@ func NewLanguageDAOMemory() LanguageDAOMemory {
 //	this.dataMap = make(map[string]entities.Language)
 //}
 
-func (this *LanguageDAOMemory) values(m map[string]entities.Language) []entities.Language {
-	var a = make([]entities.Language, len(m))
-	i := 0
-	for _, v := range m {
-		a[i] = v
-		i++
-	}
-	return a
-}
+//func (this *LanguageDAOMemory) values(m map[string]entities.Language) []entities.Language {
+//	var a = make([]entities.Language, len(m))
+//	i := 0
+//	for _, v := range m {
+//		a[i] = v
+//		i++
+//	}
+//	return a
+//}
 
 func (this *LanguageDAOMemory) FindAll() []entities.Language {
-	log.Print("DAO - FindAll() ")
-	return this.values(this.dataMap)
+	log.Print("LanguageDAOMemory - FindAll() ")
+	//return this.values(this.dataMap)
+	return this.dataMap.values()
 }
 
 func (this *LanguageDAOMemory) Find(code string) *entities.Language {
-	log.Printf("DAO - Find(%s) ", code)
-	language := this.dataMap[code]
-	return &language
+	log.Printf("LanguageDAOMemory - Find(%s) ", code)
+//	language := this.dataMap[code]
+//	return &language
+	return this.dataMap.read(code)
 }
 
 func (this *LanguageDAOMemory) Exists(code string) bool {
-	log.Printf("DAO - Exists(%s) ", code)
-	_, exists := this.dataMap[code] // search in map
-	log.Printf("DAO - Exists(%s) : ", code, exists)
+	log.Printf("LanguageDAOMemory - Exists(%s) ", code)
+	// _, exists := this.dataMap[code] // search in map
+	exists := this.dataMap.exists(code)
+	log.Printf("LanguageDAOMemory - Exists(%s, %t) : ", code, exists)
 	return exists
 }
 
 func (this *LanguageDAOMemory) Create(language entities.Language) bool {
-	log.Printf("DAO - Create(%s) ", language.Code)
+	log.Printf("LanguageDAOMemory - Create(%s) ", language.Code)
 
 	if this.Exists(language.Code) {
-		log.Printf("DAO - Create(%s) : already exists => cannot create", language.Code)
+		log.Printf("LanguageDAOMemory - Create(%s) : already exists => cannot create", language.Code)
 		return false
 	} else {
-		log.Printf("DAO - Create(%s) : not found => created", language.Code)
-		this.dataMap[language.Code] = language
+		log.Printf("LanguageDAOMemory - Create(%s) : not found => created", language.Code)
+		//this.dataMap[language.Code] = language
+		this.dataMap.write(language)
 		return true
 	}
 }
 
 func (this *LanguageDAOMemory) Delete(code string) bool {
-	log.Printf("DAO - Delete(%s) ", code)
+	log.Printf("LanguageDAOMemory - Delete(%s) ", code)
 	if this.Exists(code) {
-		delete(this.dataMap, code) // delete in map
+		//delete(this.dataMap, code) // delete in map
+		this.dataMap.remove(code)
 		return true                // found and deleted
 	} else {
 		return false // not found => not deleted
@@ -84,9 +91,10 @@ func (this *LanguageDAOMemory) Delete(code string) bool {
 }
 
 func (this *LanguageDAOMemory) Update(language entities.Language) bool {
-	log.Printf("DAO - Update(%s) ", language.Code)
+	log.Printf("LanguageDAOMemory - Update(%s) ", language.Code)
 	if this.Exists(language.Code) {
-		this.dataMap[language.Code] = language // update in map
+		//this.dataMap[language.Code] = language // update in map
+		this.dataMap.write(language)
 		return true                            // found and updated
 	} else {
 		return false // not found => not updated
