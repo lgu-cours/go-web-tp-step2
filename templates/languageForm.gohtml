@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Language</title>
+</head>
+
+<body>
+
+<a href="/">Home</a>
+
+<h2>Languages form </h2>
+
+<form action="/language/form" method="post">
+
+<table>
+
+<tr><td>Code : </td>
+    <td><input type="text" name="code" value="{{if .CreationMode}}{{else}}{{.Language.Code}}{{end}}" 
+         {{if not .CreationMode}}readonly="readonly"{{ end }} ></td></tr>
+         
+<tr><td>Name : </td>
+    <td><input type="text" name="name" value="{{.Language.Name}}" 
+         ></td></tr>
+         
+</table>
+
+{{ if .CreationMode }}
+    <input id="createButton" type="submit" name="submit" value="create" >
+{{ else }}
+    <input id="updateButton" type="submit" name="submit" value="update">
+    <input id="deleteButton" type="submit" name="submit" value="delete">
+{{ end }}
+&nbsp;&nbsp;<a href="/language/list">List</a>
+</form>
+</body>
+</html>

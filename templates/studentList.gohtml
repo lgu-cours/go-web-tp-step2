@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Languages</title>
+</head>
+
+<body>
+
+<a href="/">Home</a> 
+
+<h2>Students list </h2>
+
+<h3>{{len .}} student(s) found</h3>
+
+<table border="1">
+{{range .}}<tr><td> {{.Id}} </td>
+<td> {{.FirstName}} </td>
+<td> {{.LastName}} </td>
+<td> <a href="/student/form?id={{.Id}}">Edit</a> </td>
+</tr>
+{{end}}
+</table>
+
+<a href="/student/form">Create</a> 
+
+</body>
+</html>

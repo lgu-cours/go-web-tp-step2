@@ -1,0 +1,7 @@
+/.project
+/boltdb.data
+/boltdb.data.lock
+/bin/
+/export/
+/pkg/
+/.settings/

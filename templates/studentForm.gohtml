@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Languages</title>
+</head>
+
+<body>
+
+<a href="/">Home</a> 
+
+<h2>Student form </h2>
+
+<form action="/student/form" method="post">
+
+<table>
+
+<tr><td>Id : </td>
+    <td><input type="text" name="id" value="{{if .CreationMode}}{{else}}{{.Student.Id}}{{end}}" 
+         {{if not .CreationMode}}readonly="readonly"{{ end }} ></td></tr>
+         
+<tr><td>First name : </td>
+    <td><input type="text" name="firstname" value="{{.Student.FirstName}}" 
+         ></td></tr>
+         
+<tr><td>Last name :  </td>
+    <td><input type="text" name="lastname"  value="{{.Student.LastName}}" 
+         ></td></tr>
+         
+<tr><td>Age :        </td>
+    <td><input type="text" name="age"       value="{{.Student.Age}}"     
+         min="0" max="99"></td></tr>
+
+<tr><td>Prefered language :        </td>
+<td>
+<select name="languageCode" >
+{{range .Languages}}<option value="{{.Code}}" {{if eq .Code $.Student.LanguageCode}}selected="selected"{{end}}>{{.Name}}</option>
+{{end}}
+<!-- 
+  <option value="vw">VW</option>
+  <option value="audi" selected>Audi</option>
+ -->
+</select>
+</td></tr>
+
+</table>
+
+{{ if .CreationMode }}
+    <input id="createButton" type="submit" name="submit" value="create" >
+{{ else }}
+    <input id="updateButton" type="submit" name="submit" value="update">
+    <input id="deleteButton" type="submit" name="submit" value="delete">
+{{ end }}
+&nbsp;&nbsp;<a href="/student/list">List</a> 
+</form>
+
+{{/* Len .Languages = {{len .Languages}} */}}
+
+</body>
+</html>
