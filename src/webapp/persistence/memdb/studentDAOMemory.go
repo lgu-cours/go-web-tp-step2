@@ -7,24 +7,27 @@ import (
 	"webapp/entities"
 )
 
-// This type/struct stores no state, it’s just a collection of methods
+// Structure definition
 type StudentDAOMemory struct {
 	dataMap map[int]entities.Student // the map to store entities
 }
 
+// Structure pseudo-construtor
 func NewStudentDAOMemory() StudentDAOMemory {
 	log.Printf("NewStudentDAOMemory()")
-	dao := StudentDAOMemory{} // structure creation 
-	dao.init() // structure init 
-	return dao
-
+	//dao := StudentDAOMemory{} // structure creation 
+	//dao.init() // structure init
+	//return dao
+	return StudentDAOMemory{
+		dataMap: make(map[int]entities.Student),
+	} 
 }
 
-// Structure initialization 
-func (this *StudentDAOMemory) init() {
-	log.Printf("init()")
-	this.dataMap = make(map[int]entities.Student) // map creation 
-}
+//// Structure initialization
+//func (this *StudentDAOMemory) init() {
+//	log.Printf("init()")
+//	this.dataMap = make(map[int]entities.Student) // map creation
+//}
 
 func (this *StudentDAOMemory) values(m map[int]entities.Student) []entities.Student {
 	var a = make([]entities.Student, len(m))
@@ -80,7 +83,7 @@ func (this *StudentDAOMemory) Delete(id int) bool {
 	log.Printf("DAO - Delete(%d) ", id)
 	if this.Exists(id) {
 		delete(this.dataMap, id) // delete in map
-		return true             // found and deleted
+		return true              // found and deleted
 	} else {
 		return false // not found => not deleted
 	}
@@ -90,7 +93,7 @@ func (this *StudentDAOMemory) Update(student entities.Student) bool {
 	log.Printf("DAO - Update(%d) ", student.Id)
 	if this.Exists(student.Id) {
 		this.dataMap[student.Id] = student // update in map
-		return true                       // found and updated
+		return true                        // found and updated
 	} else {
 		return false // not found => not updated
 	}
