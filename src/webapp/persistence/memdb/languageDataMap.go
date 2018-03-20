@@ -34,8 +34,12 @@ func (this *LanguageDataMap) read(code string) *entities.Language {
 	log.Printf("LanguageDataMap - read(%s) ", code)
 	this.lock.RLock()
 	defer this.lock.RUnlock()
-	language := this.dataMap[code]
-	return &language
+	language, exists := this.dataMap[code]
+	if exists {
+		return &language
+	} else {
+		return nil
+	}
 }
 func (this *LanguageDataMap) exists(code string) bool {
 	log.Printf("LanguageDataMap - exists(%s) ", code)
